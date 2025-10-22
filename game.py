@@ -555,76 +555,6 @@ def _plot_stats_window_tk(
                 )
                 legend_y += spacing
 
-        # --- XY scatter plot tab: hand size vs score ---
-        xy_frame = ttk.Frame(nb)
-        nb.add(xy_frame, text="Hand vs Score (XY)")
-        xy_canvas = tk.Canvas(xy_frame, width=width, height=height, bg="white")
-        xy_canvas.pack()
-        if cards_at_scoring and scores and len(cards_at_scoring) == len(scores):
-            x_vals = cards_at_scoring
-            y_vals = scores
-            x_min, x_max = min(x_vals), max(x_vals)
-            y_min, y_max = min(y_vals), max(y_vals)
-            if x_min == x_max:
-                x_min -= 1
-                x_max += 1
-            if y_min == y_max:
-                y_min -= 1
-                y_max += 1
-
-            def x_to_px_xy(x_val: float) -> float:
-                return pad_left + (x_val - x_min) / (x_max - x_min) * (
-                    width - pad_left - pad_right
-                )
-
-            def y_to_px_xy(y_val: float) -> float:
-                return pad_top + (y_max - y_val) / (y_max - y_min) * (
-                    height - pad_top - pad_bottom
-                )
-
-            x0, y0, x1, y1 = _draw_axes(
-                xy_canvas,
-                width,
-                height,
-                pad_left,
-                pad_right,
-                pad_top,
-                pad_bottom,
-                "Cards in hand",
-                "Score",
-                "Hand size vs Score (XY scatter)",
-            )
-            for x in range(int(x_min), int(x_max) + 1):
-                x_px = x_to_px_xy(x)
-                xy_canvas.create_line(x_px, y0, x_px, y1, fill="#f7f7f7")
-                xy_canvas.create_text(
-                    x_px, y0 + 14, text=str(x), anchor="n", font=("Segoe UI", 9)
-                )
-            tick_count = 6
-            for i in range(tick_count):
-                y_val = y_min + i * (y_max - y_min) / (tick_count - 1)
-                y_px = y_to_px_xy(y_val)
-                xy_canvas.create_line(x0, y_px, x1, y_px, fill="#eee")
-                xy_canvas.create_text(
-                    x0 - 8, y_px, text=f"{y_val:.1f}", anchor="e", font=("Segoe UI", 9)
-                )
-            for x, y in zip(x_vals, y_vals):
-                xy_canvas.create_oval(
-                    x_to_px_xy(x) - 3,
-                    y_to_px_xy(y) - 3,
-                    x_to_px_xy(x) + 3,
-                    y_to_px_xy(y) + 3,
-                    fill="#d62728",
-                    outline="",
-                )
-        else:
-            xy_canvas.create_text(
-                width / 2,
-                height / 2,
-                text="No data for hand size vs score",
-                font=("Segoe UI", 12),
-            )
-
         root.mainloop()
     except Exception as e:
         import traceback
@@ -641,7 +571,7 @@ def main() -> int:
     random.shuffle(deck)
     player = Player()
     len_deck = len(deck)
-    games = 10_000  # number of completed games to simulate
+    games = 10_000_000  # number of completed games to simulate
     index = 0
     scores: List[int] = []
     cards_at_scoring: List[int] = []
