@@ -48,10 +48,6 @@ print("Final running average:", results.running_avg[-1])
 - If the GUI does not appear on Linux, ensure `python3-tk` (or equivalent) is installed.
 - There are currently no automated tests in the repository; consider adding a small test harness if you plan to refactor the simulation.
 
-## License
-Add a license file (e.g., `LICENSE`) or replace this section with your preferred license.
-
----
 
 If you'd like, I can also:
 - add a minimal `requirements.txt` or `pyproject.toml`;
